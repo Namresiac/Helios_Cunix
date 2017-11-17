@@ -5,29 +5,22 @@
 #include "linked_list.h"
 #include <assert.h>
 
-
-
 void printInt(void *data)
 {
   printf("%s\n", data);
 }
 
-void test_destroy_push(void *data)
+void  test_destroy_push(void *data)
 {
   free(data);
 }
 
-void test_destroy_noop(void *data)
+void  test_destroy_noop(void *data)
 {
   data;
 }
 
-void test_debug_print(void *data)
-{
-  printf("DEBUG: %s\n", (char *) data);
-}
-
-int test_create()
+int       test_create()
 {
   node_t  *head;
   char    *valid;
@@ -38,16 +31,18 @@ int test_create()
   return strcmp(valid, "test");
 }
 
-int test_destroy()
+int      test_destroy()
 {
   node_t *head;
 
   head = list_create("Test destroy: fail");
-  list_destroy(&head, &test_destroy_noop);
+  printf("Test destroy: ok");
+  list_clean(&head);
+
   return 0;
 }
 
-int test_push()
+int      test_push()
 {
   node_t  *head;
   char    *valid;
@@ -69,7 +64,7 @@ int test_push()
   return 0;
 }
 
-int test_print()
+int      test_print()
 {
   node_t *head;
   char   *str;
@@ -87,7 +82,7 @@ int test_print()
   return 0;
 }
 
-int test_unshift()
+int      test_unshift()
 {
   node_t *head;
   char   *valid;
@@ -98,7 +93,7 @@ int test_unshift()
 
   for(int i = 0; i < 10; i++)
   {
-    asprintf(&str, "%05d-world\n", i);
+    asprintf(&str, "%05d-world", i);
     list_unshift(&head, str);
   }
 
@@ -110,7 +105,7 @@ int test_unshift()
   return 0;
 }
 
-int test_pop()
+int      test_pop()
 {
   node_t  *head;
   char    *valid;
@@ -132,7 +127,7 @@ int test_pop()
   return 0;
 }
 
-int test_shift()
+int      test_shift()
 {
   node_t   *head;
   char     *valid;
@@ -151,7 +146,7 @@ int test_shift()
   return 0;
 }
 
-int test_remove()
+int      test_remove()
 {
   node_t *head;
   char   *valid;
@@ -178,21 +173,21 @@ int test_remove()
   return 0;
 }
 
-int test_visitor()
+int      test_visitor()
 {
   node_t *head;
   char   *str;
 
   asprintf(&str, "Test visitor: ok");
   head = list_create(str);
-  list_visitor(head, &test_debug_print);
+  list_visitor(head, &printInt);
 
   list_destroy(&head, &test_destroy_push);
 
   return 0;
 }
 
-int test_global()
+int      test_global()
 {
   node_t *head;
   char   *str;
@@ -225,7 +220,7 @@ int test_global()
   return 0;
 }
 
-int main()
+int main(void)
 {
    assert(test_create() == 0);
    assert(test_destroy() == 0);

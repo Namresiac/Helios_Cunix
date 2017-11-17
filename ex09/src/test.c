@@ -1,6 +1,3 @@
-
-#include "hash.h"
-
 #define _GNU_SOURCE
 
 
@@ -8,6 +5,110 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include "hash.h"
+#include "linked_list.h"
+
+node_t  *list_create(void *data)
+{
+  node_t *element;
+  element=malloc(sizeof(node_t));
+  element->data = data;
+  element->next = NULL;
+
+  return element;
+}
+
+void  list_destroy(node_t **head, void(*fp)(void *data))
+{
+  if (!(*head)) return;
+  if (!(*head)->next) list_destroy(&((*head)->next), fp);
+
+  fp((*head)->data);
+  free(*head);
+  (*head) = NULL;
+}
+
+void  list_push(node_t *head, void *data)
+{
+  if (!head)
+  {
+    head = list_create(data);
+    return;
+  }
+
+  node_t *tmp = head;
+  while(tmp->next)
+  {
+    tmp = tmp->next;
+  }
+  tmp->next = list_create(data);
+}
+
+hashtable_t *hash_create(unsigned int size)
+{
+  if(size<=0) return NULL;
+
+  hashtable_t*ht;
+  ht = malloc(sizeof(hashtable_t));
+
+  ht->size = size;
+  ht->table = (void**)malloc(size * sizeof(void*));
+
+  for(int i = 0; i < size; i++)
+    ht->table[i] = NULL;
+
+  return ht;
+}
+
+void  hash_destroy(hashtable_t *ht, void(*fp)(void *data))
+{
+  node_t *node;
+
+  if(!ht) return;
+
+  for(int i = 0; i < ht->size; i++)
+  {
+    node = ht->table[i];
+    if (node) list_destroy(&node, fp);
+  }
+  free(ht->table);
+  ht->table = NULL;
+  free(ht);
+}
+
+unsigned int  hash_func(char *key)
+{
+  if(!key) return NULL;
+
+  int code = 0;
+  int i = 0;
+  while(key[i] != '\0')
+  {
+    code += (int)key[i];
+    i++;
+  }
+  return code;
+}
+
+void hash_set(hashtable_t *ht, char *key, void *data, void (*fp)(void *data))
+{
+  int index = hash_func(key) % ht->size;
+
+  if (ht->table[index]) list_push(ht->table[index], data);
+  else
+    ht->table[index] = list_create(data);
+
+  fp(key);
+}
+
+void  *hash_get(hashtable_t *ht, char *key)
+{
+  int index = hash_func(key) % ht->size;
+
+  if (!ht->table[index]) return NULL;
+  else
+    return ((node_t*)ht->table[index])->data;
+}
 
 void test_func_noop(void *data)
 {

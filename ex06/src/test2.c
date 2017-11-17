@@ -5,28 +5,6 @@
 #include "test.h"
 #include <stdarg.h>
 
-int my_printf(const char *format, ...)
-{
-  va_list args;
-  va_start (args, format);
-
-  int i;
-  i = 0;
-
-  for (format[i]; i++;)
-  switch (format[i])
-  {
-    case 'D' : case 'd' :
-      printf ("%d", va_arg(args,int), format);
-        break;
-    case 'S' : case 's' :
-        printf ("%s", va_arg(args,int), format);
-        break;
-  }
-  va_end (args);
-}
-
-
 
 int   test_all()
 {

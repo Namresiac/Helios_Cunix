@@ -1,5 +1,5 @@
 
-int		ft_atoi(const char *nptr)
+int		my_atoi(const char *nptr)
 {
 	int	i;
 	int neg;

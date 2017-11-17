@@ -5,23 +5,6 @@
 #include <string.h>
 #include "test.h"
 
-int my_putc(char c)
-{
-  write(1, &c, 1);
-    return 0;
-}
-
-int my_puts(const char *s)
-{
-  int i;
-  i = 0;
-
-  while(s[i] != '\0')
-  {
-    my_putc(s[i]);
-    i++;
-  }
-}
 
 int   test_all()
 {

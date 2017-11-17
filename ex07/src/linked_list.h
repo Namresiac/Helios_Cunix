@@ -2,6 +2,7 @@
 # define  LINKED_LIST_H_
 
 typedef struct  node {
+    char        *key;
     void        *data;
     struct node *next;
 }              node_t;
@@ -9,6 +10,7 @@ typedef struct  node {
 node_t  *list_create(void *data);
 
 void    list_destroy(node_t **head, void (*fp)(void *data));
+void    list_clean(node_t **head);
 
 void    list_push(node_t *head, void *data);
 void    list_unshift(node_t **head, void *data);

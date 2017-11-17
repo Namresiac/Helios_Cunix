@@ -1,16 +1,11 @@
-
-
-int my_putc(char c)
-{
-  write(1, &c,1);
-    return 0;
-}
+#include<unistd.h>
 
 int my_puts(const char *s)
 {
-  while(*s)
+  for (int i = 0; *(s+i) != '\0'; i++)
   {
-    my_putc(*s);
-    s++;
+    write (1, s+i, 1);
   }
+  write(1, "\n", 1);
+  return 0;
 }

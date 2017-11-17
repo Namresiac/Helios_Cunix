@@ -1,5 +1,3 @@
-#include<string.h>
-#include<stdio.h>
 
 unsigned int my_strlen(char *str)
 {
@@ -14,8 +12,3 @@ unsigned int my_strlen(char *str)
   return i;
 }
 
-int main()
-{
-  printf("%d", strlen("jijijijijijdjdjdjdjdjdjjdjddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"));
-  return 0;
-}
